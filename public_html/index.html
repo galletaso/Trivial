@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Trivial</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="js/jquery.raty.css" rel="stylesheet" type="text/css"/>
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <style>
+            .amarillo{
+                color : #ff0;
+            }
+            .miniboton{
+                width: 50px;
+                min-width: 50px;
+                height: 50px;
+                min-height: 50px;
+            }
+        </style>
+        <script src="js/verbos.js" type="text/javascript"></script>
+        <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/jquery.raty.js" type="text/javascript"></script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="text-center" style="white-space: nowrap;font-size: 5vw"> Trivial</h2>
+                    <div id="Historia" class="btn btn-success btn-block" onclick="asignaturas(historia)">Historia</div>
+                    <div id="Filosofia" class="btn btn-warning btn-block" onclick="asignaturas(filosofia)">Filosofía</div>
+                    <div id="Economia" class="btn btn-primary btn-block" onclick="asignaturas(economia)">Economía</div>
+                    <div id="LitLeng" class="btn btn-danger btn-block" onclick="asignaturas(lengua)">Lengua y Literatura</div>
+                    <div id="Ingles" class="btn btn-info btn-block" onclick="asignaturas(ingles)">Inglés</div>
+                    <br>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <br>
+                <div class="row text-center" id="niveles">
+                
+                </div>
+                <br><br><br>
+                
+                <div class="col-xs-2"></div>
+                <div id="contenedor" class="col-xs-8">
+                    <div id="pregunta" class="btn btn-block"></div><br>
+                    <div id ="respuesta1"></div>
+                    <div id ="respuesta2"></div>
+                    <div id ="respuesta3"></div>
+                    <div id ="respuesta4"></div>
+                    <br>
+                    <div id ="comprobar"></div>
+                </div>
+                <div class="col-xs-2"></div>
+            </div> 
+            <br><br>
+            
+
+        </div>
+
+
+        <script>
+    
+    var inicio = false;
+    var siguiente;
+    var numeroCaja; 
+    var contador = 0; 
+    var asignatura;
+    
+    var numeroVerbos = 0;
+    //iniciaPartida();
+    
+    function iniciaPartida(){
+        //tiene que mostrar algo para que se pueda elegir el numero de 
+        //verbos con el que se va a jugar
+        for (var i=1; i<11; i++){
+            $('#niveles').append('<div class="miniboton btn-group"> <button class="miniboton btn btn-large btn-primary" onclick="pregunta('+i*1+')"> '+i*1+'</button></div>');
+            if (i===5) { $('#niveles').append('<p></p>');}
+        }         
+    }
+    
+    $('#progreso').raty({
+        readOnly    : true, 
+        score       : 0, 
+        number      : 10, 
+        halfShow    : true
+    });
+    
+    function pregunta(a){
+        siguiente = a-1;
+        $('#contenedor').fadeOut("slow").fadeIn("slow", function(){
+                                      sigue();
+                                    });
+    }
+    
+    function asignaturas(b){
+        asignatura = b;
+        siguiente = 0;
+        if(!inicio){    
+            $('#niveles').fadeOut("slow").fadeIn("slow", function(){
+                                          iniciaPartida();
+                                        });
+        }else{
+            $('#contenedor').fadeOut();
+            thread.sleep(100);
+            sigue();
+        }
+        
+        inicio=true;
+    }
+    
+    function cambiaBotones(){
+            numeroCaja= 0/*Math.floor(Math.random() * 3) + 1*/;
+            //siguiente = 0/*Math.floor(Math.random() * verbos.length)*/;
+
+        switch (asignatura){
+            case historia:
+                $('#pregunta').text(historia[siguiente][0]);
+                $('#respuesta1').append('<button id="boton2" class="btn  btn-block" >' + historia[siguiente][1] + ' </button> ');
+                $('#respuesta2').append('<button id="boton3" class="btn  btn-block" >' + historia[siguiente][2] + ' </button> ');
+                $('#respuesta3').append('<button id="boton4" class="btn  btn-block" >' + historia[siguiente][3] + ' </button> ');
+                $('#respuesta4').append('<button id="boton5" class="btn  btn-block" >' + historia[siguiente][4] + ' </button> ');
+                break;
+            case economia:
+                $('#pregunta').text(economia[siguiente][0]);
+                $('#respuesta1').append('<button id="boton2" class="btn  btn-block" >' + economia[siguiente][1] + ' </button> ');
+                $('#respuesta2').append('<button id="boton3" class="btn  btn-block" >' + economia[siguiente][2] + ' </button> ');
+                $('#respuesta3').append('<button id="boton4" class="btn  btn-block" >' + economia[siguiente][3] + ' </button> ');
+                $('#respuesta4').append('<button id="boton5" class="btn  btn-block" >' + economia[siguiente][4] + ' </button> ');
+                break;
+        }    
+            
+        
+            $('#respuesta1').click( function(){
+                numeroCaja = 1;
+                switch (asignatura){
+                    case historia:
+                        comprueba(historia[siguiente][5]);
+                        break;
+                    case economia:
+                        comprueba(economia[siguiente][5]);
+                        break;    
+                }
+            });
+            
+            $('#respuesta2').click( function(){
+                numeroCaja = 2;
+                switch (asignatura){
+                    case historia:
+                        comprueba(historia[siguiente][5]);
+                        break;
+                    case economia:
+                        comprueba(economia[siguiente][5]);
+                        break;    
+                }
+            });
+            
+            $('#respuesta3').click( function(){
+                numeroCaja = 3;
+                switch (asignatura){
+                    case historia:
+                        comprueba(historia[siguiente][5]);
+                        break;
+                    case economia:
+                        comprueba(economia[siguiente][5]);
+                        break;    
+                }
+            });
+            
+            $('#respuesta4').click( function(){
+                numeroCaja = 4;
+                switch (asignatura){
+                    case historia:
+                        comprueba(historia[siguiente][5]);
+                        break;
+                    case economia:
+                        comprueba(economia[siguiente][5]);
+                        break;    
+                }
+            });           
+    }
+    
+    function sigue(){
+        $('#pregunta').text('');
+        $('#respuesta1').text('');
+        $('#respuesta2').text('');
+        $('#respuesta3').text('');
+        $('#respuesta4').text('');
+        $('#comprobar').text('');
+        cambiaBotones();
+        /*$('#progreso').raty({
+            readOnly    : true, 
+            score       : contador, 
+            number      : 10, 
+            halfShow    : true
+        });
+        if (contador < 10){
+            //contador = 0;
+            contadorEstrellas ++;
+            cambiaEstrellasGrandes();
+        }*/
+    }
+
+    function cambiaEstrellasGrandes(){
+        $('#estrellas').raty({
+            readOnly    : true, 
+            score       : contadorEstrellas, 
+            number      : contadorEstrellas, 
+            halfShow    : false,
+            starType    : 'i'
+        });
+        numeroVerbos+=10;
+        $('#estrellas').find('i')
+                .removeClass("star-on-png");
+        switch (numeroVerbos){
+            case 10: $('#estrellas').find('i').addClass("fa fa-smile-o fa-2x amarillo"); break;
+            case 20: $('#estrellas').find('i').addClass("fa fa-bolt fa-2x amarillo"); break;
+            case 30: $('#estrellas').find('i').addClass("fa fa-star fa-2x amarillo"); break;
+            case 40: $('#estrellas').find('i').addClass("fa fa-thumbs-up fa-2x amarillo"); break;
+            case 50: $('#estrellas').find('i').addClass("fa fa-sun-o fa-2x amarillo"); break;
+            case 60: $('#estrellas').find('i').addClass("fa fa-university fa-2x amarillo"); break;
+            case 70: $('#estrellas').find('i').addClass("fa fa-rebel fa-2x amarillo"); break;
+            case 80: $('#estrellas').find('i').addClass("fa fa-graduation-cap fa-2x amarillo"); break;             
+        }
+                
+    }
+
+    function comprueba(c){
+        var respuestaCorrecta = c;
+        console.log(numeroCaja + " ;" + respuestaCorrecta)
+        if (respuestaCorrecta == numeroCaja) { //( verboLeido === verboCorrecto){
+            $('#comprobar').text('¡CORRECTO!')
+                    .addClass("btn-success")
+                    /*.fadeOut("slow")
+                    .fadeIn("slow", function(){
+                                      sigue();
+                                    });*/
+            contador += 1; 
+            
+        }
+        else {
+            $('#comprobar').text('¡Error!').addClass("btn-danger");
+            contador = 0;
+        }
+    }
+
+
+
+
+
+        </script>
+    </body>
+</html>
